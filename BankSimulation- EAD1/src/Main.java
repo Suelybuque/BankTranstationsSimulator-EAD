@@ -8,7 +8,7 @@ public class Main {
         //dialog box
         int menu= Integer.parseInt(JOptionPane.showInputDialog( " Selecione uma opcao: \n"+vis.menu()));
 
-        int levantamentoMontante= Integer.parseInt(JOptionPane.showInputDialog( " Selecione uma opcao: \n"+vis.montante()));
+        int levantamentoMontante= Integer.parseInt(JOptionPane.showInputDialog( " Selecione uma opcao: \n"+vis.montanteLevantamento()));
         //display message
         JOptionPane.showMessageDialog(null, "Opcao "+levantamentoMontante);
 
