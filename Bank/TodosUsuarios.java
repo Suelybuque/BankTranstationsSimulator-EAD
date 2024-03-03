@@ -21,7 +21,7 @@ public class TodosUsuarios
 			UmaLinha = br.readLine();
 			while(UmaLinha != null)
 			{
-				str = new StringTokenizer(UmaLinha," ");
+				str = new StringTokenizer(UmaLinha,";");
 				//System.out.println(UmaLinha);
 				titular = str.nextToken();
 				numero_de_conta = Integer.parseInt(str.nextToken());

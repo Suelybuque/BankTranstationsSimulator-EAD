@@ -48,14 +48,14 @@ public class Validacoes
 		}while(x < c || x > d);
 		return x;
 	}
-	public float validarFloat(String a, String b, int c)
+	public float validarFloat(/*String a, String b, */String s, int c)
 	{
 		float x = 0;
 		do
 		{
 			try
 			{
-				System.out.println(a);
+				//System.out.println(a);
 				x = Float.parseFloat(br.readLine());
 			}
 			catch(NumberFormatException j)
@@ -66,8 +66,8 @@ public class Validacoes
 			{
 				System.out.println(k.getMessage());
 			}
-			if(x < c)
-				System.out.println(b);
+			//if(x < c)
+				//System.out.println(b);
 		}while(x < c);
 		return x;
 	}
