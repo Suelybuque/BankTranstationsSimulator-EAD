@@ -1,3 +1,5 @@
+//Algorithm complexity O(1)
+
 import java.io.*;
 public class Validacoes 
 {

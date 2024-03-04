@@ -1,3 +1,5 @@
+//Algorithm complexity O(1)
+
 import java.text.DecimalFormat;
 public class Visualizacoes 
 {
@@ -10,9 +12,10 @@ public class Visualizacoes
 	{
 		System.out.println("Obrigado, tenha um bom dia !");
 	}
-	public void saldo(float a)
-	{
-		System.out.println("Saldo: "+mt.format(a));
+	public String saldo(float valor)
+	{String str= "Saldo: "+ mt.format(valor);
+
+		 return str;
 	}
 	public void deposito()
 	{

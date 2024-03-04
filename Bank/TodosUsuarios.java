@@ -1,3 +1,5 @@
+//Algorithm complexitity O(n)
+
 import java.io.*;
 import java.util.StringTokenizer;
 public class TodosUsuarios 

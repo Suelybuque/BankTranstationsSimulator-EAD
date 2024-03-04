@@ -1,5 +1,5 @@
 import javax.swing.*;
-
+//Algorithm complexitity O(1)
 public class Abertura {
 	private float valor;
 	private Validacoes val;

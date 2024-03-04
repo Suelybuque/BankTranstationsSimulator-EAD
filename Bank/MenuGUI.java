@@ -1,3 +1,5 @@
+//Algorithm complexitity O(1)
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -6,11 +8,12 @@ public class MenuGUI extends JFrame implements ActionListener {
 	private CardLayout cardLayout;
 	private JPanel mainPanel, menuPanel, aberturaPanel;
 	private JButton buttonAbertura, buttonLevantamento, buttonTransferencia, buttonPagamento, buttonConsultarSaldo, continueButton;
-	private JLabel saldoLabel;
+
 	private float saldo;
 	private TodosUsuarios usuarios;
 	private Abertura abr;
 	private Validacoes val;
+	private  Visualizacoes vis;
 
 	public MenuGUI() {
 		setTitle("Menu");
@@ -32,6 +35,7 @@ public class MenuGUI extends JFrame implements ActionListener {
 		welcomePanel.add(buttonPanel, BorderLayout.SOUTH);
 		mainPanel.add(welcomePanel, "bem-vindo");
 
+		//Abertura de conta
 		aberturaPanel = new JPanel(new BorderLayout());
 		JLabel aberturaLabel = new JLabel("Painel de Abertura de Conta", JLabel.CENTER);
 		aberturaLabel.setFont(new Font("Arial", Font.BOLD, 18));
@@ -43,18 +47,19 @@ public class MenuGUI extends JFrame implements ActionListener {
 		aberturaPanel.add(aberturaButtonPanel, BorderLayout.SOUTH);
 		mainPanel.add(aberturaPanel, "abertura");
 
-		menuPanel = new JPanel(new GridLayout(4, 1));
+		//Menu
+		menuPanel = new JPanel(new GridLayout(3, 1));
 		buttonLevantamento = new JButton("Levantamento");
 		buttonTransferencia = new JButton("Transferência");
-		buttonPagamento = new JButton("Pagamento");
+		//buttonPagamento = new JButton("Pagamento");
 		buttonConsultarSaldo = new JButton("Consultar Saldo");
 		buttonLevantamento.addActionListener(this);
 		buttonTransferencia.addActionListener(this);
-		buttonPagamento.addActionListener(this);
+		//buttonPagamento.addActionListener(this);
 		buttonConsultarSaldo.addActionListener(this);
 		menuPanel.add(buttonLevantamento);
 		menuPanel.add(buttonTransferencia);
-		menuPanel.add(buttonPagamento);
+		//menuPanel.add(buttonPagamento);
 		menuPanel.add(buttonConsultarSaldo);
 		mainPanel.add(menuPanel, "menu");
 
@@ -73,7 +78,7 @@ public class MenuGUI extends JFrame implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == continueButton) {
+		if (e.getSource()  == continueButton) {
 			cardLayout.show(mainPanel, "abertura");
 		} else if (e.getSource() == buttonAbertura) {
 			abrirConta();
@@ -81,45 +86,44 @@ public class MenuGUI extends JFrame implements ActionListener {
 			levantamento();
 		} else if (e.getSource() == buttonTransferencia) {
 			transferencia();
-		} else if (e.getSource() == buttonPagamento) {
+		} /*else if (e.getSource() == buttonPagamento) {
 			pagamento();
-		} else if (e.getSource() == buttonConsultarSaldo) {
+		} */else if (e.getSource() == buttonConsultarSaldo) {
 			consultarSaldo();
 		}
 	}
 
 //Metodo usado para a abertura de conta
-	private void abrirConta() {
-		// Criar um painel para personalizar o JOptionPane
-		JPanel panel = new JPanel(new GridLayout(2, 2)); // Layout de grade 2x2
+private void abrirConta() {
+	// Criar um painel para personalizar o JOptionPane
+	JPanel panel = new JPanel(new GridLayout(2, 2)); // Layout de grade 2x2
 
-		// Adicionar rótulo e campo de texto para solicitar o valor de abertura
-		JLabel label = new JLabel("Insira o valor inicial para abertura de conta: ");
-		JTextField textField = new JTextField();
-		panel.add(label);
-		panel.add(textField);
+	// Adicionar rótulo e campo de texto para solicitar o valor de abertura
+	JLabel label = new JLabel("Insira o valor inicial para abertura de conta: ");
+	JTextField textField = new JTextField();
+	panel.add(label);
+	panel.add(textField);
 
-		// Exibir o JOptionPane personalizado e aguardar a entrada do usuário
-		int result = JOptionPane.showConfirmDialog(null, panel, "Abertura de Conta", JOptionPane.OK_CANCEL_OPTION);
-		if (result == JOptionPane.OK_OPTION) {
-			// Verificar se o usuário inseriu um valor válido
-			try {
-				float valorAbertura = Float.parseFloat(textField.getText());
-				if (valorAbertura > 0) {
-					// Atualizar o saldo dentro do objeto Abertura
-					abr.setSaldo(valorAbertura);
-					saldo = abr.getSaldo(); // Atualiza o saldo local
-					// Passar para o menu principal
-					cardLayout.show(mainPanel, "menu");
-				} else {
-					JOptionPane.showMessageDialog(null, "O valor de abertura deve ser maior que zero!", "Erro", JOptionPane.ERROR_MESSAGE);
-				}
-			} catch (NumberFormatException nb) {
-				JOptionPane.showMessageDialog(null, "Por favor, insira um valor válido!", "Erro", JOptionPane.ERROR_MESSAGE);
+	// Exibir o JOptionPane personalizado e aguardar a entrada do usuário
+	int result = JOptionPane.showConfirmDialog(null, panel, "Abertura de Conta", JOptionPane.OK_CANCEL_OPTION);
+	if (result == JOptionPane.OK_OPTION) {
+		// Verificar se o usuário inseriu um valor válido
+		try {
+			float valorAbertura = Float.parseFloat(textField.getText());
+			if (valorAbertura > 0) {
+				// Atualizar o saldo dentro do objeto Abertura
+				abr.setSaldo(valorAbertura);
+				saldo = abr.getSaldo(); // Atualiza o saldo local com o valor atualizado do objeto Abertura
+				// Passar para o menu principal
+				cardLayout.show(mainPanel, "menu");
+			} else {
+				JOptionPane.showMessageDialog(null, "O valor de abertura deve ser maior que zero!", "Erro", JOptionPane.ERROR_MESSAGE);
 			}
+		} catch (NumberFormatException nb) {
+			JOptionPane.showMessageDialog(null, "Por favor, insira um valor válido!", "Erro", JOptionPane.ERROR_MESSAGE);
 		}
 	}
-
+}
 
 	private void levantamento() {
 		// Implementa a lógica de levantamento
@@ -140,8 +144,9 @@ public class MenuGUI extends JFrame implements ActionListener {
 			try {
 				float valorLevantamento = Float.parseFloat(textField.getText());
 				if (valorLevantamento > 0) {
-					//Levantamento lv = new Levantamento();
-					//lv.levantamento(abr.getSaldo(), valorLevantamento);
+
+					abr.setSaldo((abr.getSaldo())-valorLevantamento);
+
 					// Criar o painel para exibir o resultado do levantamento
 					JPanel resultadoPanel = new JPanel(new GridLayout(2, 1));
 					JLabel label2 = new JLabel("Levantamento efetuado com sucesso!");
@@ -190,11 +195,15 @@ public class MenuGUI extends JFrame implements ActionListener {
 					panel2.add(label2);
 					panel2.add(textField2);
 
+
 					//wait for input
 					int result2 = JOptionPane.showConfirmDialog(null, panel2, "Transferencia", JOptionPane.OK_CANCEL_OPTION);
 
 					int valorTr= Integer.parseInt(textField2.getText());
 					if (valorTr>0){
+						abr.setSaldo((abr.getSaldo())-valorTr);
+
+
 						// Criar o painel para exibir o resultado
 							JPanel resultadoPanel = new JPanel(new GridLayout(2, 1));
 						JLabel label3 = new JLabel("Tranferencia efetuada com sucesso!");
@@ -221,13 +230,33 @@ public class MenuGUI extends JFrame implements ActionListener {
 		}
 	}
 
-	private void pagamento() {
+	/*private void pagamento() {
 		// Implementa a lógica de pagamento
 		
-	}
+	}*/
 
 	private void consultarSaldo() {
-		// Implementa a lógica de consultar saldo aqui
+		// Implementa a lógica de consultar saldo
+		vis= new Visualizacoes();
+		JPanel panel = new JPanel(new GridLayout(2,2));
+
+		//Visualizar saldo
+
+		JLabel label = new JLabel(vis.saldo(abr.getSaldo()));
+		panel.add(label);
+
+		//Adicionar botao de cancelar
+		JButton cancelarButton= new JButton("Cancelar");
+		cancelarButton.addActionListener(e-> {
+			System.exit(0);// Fechar aplicacao
+		});
+		JPanel buttonPanel = new JPanel();
+		buttonPanel.add(cancelarButton);
+		panel.add(buttonPanel);
+
+		//Resultado/continuar
+		JOptionPane.showMessageDialog(null, panel, "Consulta de saldo", JOptionPane.PLAIN_MESSAGE);
+
 	}
 
 	public static void main(String[] args) {

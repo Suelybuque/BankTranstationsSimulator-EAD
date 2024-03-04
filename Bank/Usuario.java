@@ -1,4 +1,4 @@
-
+//Algorithm complexitity O(1)
 public class Usuario 
 {
 	private String titular;
