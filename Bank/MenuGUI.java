@@ -48,18 +48,18 @@ public class MenuGUI extends JFrame implements ActionListener {
 		mainPanel.add(aberturaPanel, "abertura");
 
 		//Menu
-		menuPanel = new JPanel(new GridLayout(3, 1));
+		menuPanel = new JPanel(new GridLayout(4, 1));
 		buttonLevantamento = new JButton("Levantamento");
 		buttonTransferencia = new JButton("Transferência");
-		//buttonPagamento = new JButton("Pagamento");
+		buttonPagamento = new JButton("Pagamento");
 		buttonConsultarSaldo = new JButton("Consultar Saldo");
 		buttonLevantamento.addActionListener(this);
 		buttonTransferencia.addActionListener(this);
-		//buttonPagamento.addActionListener(this);
+		buttonPagamento.addActionListener(this);
 		buttonConsultarSaldo.addActionListener(this);
 		menuPanel.add(buttonLevantamento);
 		menuPanel.add(buttonTransferencia);
-		//menuPanel.add(buttonPagamento);
+		menuPanel.add(buttonPagamento);
 		menuPanel.add(buttonConsultarSaldo);
 		mainPanel.add(menuPanel, "menu");
 
@@ -86,9 +86,9 @@ public class MenuGUI extends JFrame implements ActionListener {
 			levantamento();
 		} else if (e.getSource() == buttonTransferencia) {
 			transferencia();
-		} /*else if (e.getSource() == buttonPagamento) {
+		} else if (e.getSource() == buttonPagamento) {
 			pagamento();
-		} */else if (e.getSource() == buttonConsultarSaldo) {
+		} else if (e.getSource() == buttonConsultarSaldo) {
 			consultarSaldo();
 		}
 	}
@@ -96,21 +96,35 @@ public class MenuGUI extends JFrame implements ActionListener {
 //Metodo usado para a abertura de conta
 private void abrirConta() {
 	// Criar um painel para personalizar o JOptionPane
-	JPanel panel = new JPanel(new GridLayout(2, 2)); // Layout de grade 2x2
+	JPanel panel = new JPanel(new GridLayout(4, 2)); // Layout de grade 4x2
 
 	// Adicionar rótulo e campo de texto para solicitar o valor de abertura
-	JLabel label = new JLabel("Insira o valor inicial para abertura de conta: ");
-	JTextField textField = new JTextField();
-	panel.add(label);
-	panel.add(textField);
+	JLabel labelValorAbertura = new JLabel("Insira o valor inicial para abertura de conta: ");
+	JTextField textFieldValorAbertura = new JTextField();
+	panel.add(labelValorAbertura);
+	panel.add(textFieldValorAbertura);
+
+	// Adicionar rótulo e campo de texto para solicitar o número da conta
+	JLabel labelNumeroConta = new JLabel("Número da Conta: ");
+	JTextField textFieldNumeroConta = new JTextField();
+	panel.add(labelNumeroConta);
+	panel.add(textFieldNumeroConta);
+
+	// Adicionar rótulo e campo de texto para solicitar o PIN
+	JLabel labelPin = new JLabel("PIN: ");
+	JPasswordField passwordFieldPin = new JPasswordField();
+	panel.add(labelPin);
+	panel.add(passwordFieldPin);
 
 	// Exibir o JOptionPane personalizado e aguardar a entrada do usuário
 	int result = JOptionPane.showConfirmDialog(null, panel, "Abertura de Conta", JOptionPane.OK_CANCEL_OPTION);
 	if (result == JOptionPane.OK_OPTION) {
-		// Verificar se o usuário inseriu um valor válido
+		// Verificar se o usuário inseriu um valor válido para a abertura da conta
 		try {
-			float valorAbertura = Float.parseFloat(textField.getText());
+			float valorAbertura = Float.parseFloat(textFieldValorAbertura.getText());
 			if (valorAbertura > 0) {
+				//  armazenar o valor de abertura, número da conta e PIN em variáveis e usar conforme necessário
+
 				// Atualizar o saldo dentro do objeto Abertura
 				abr.setSaldo(valorAbertura);
 				saldo = abr.getSaldo(); // Atualiza o saldo local com o valor atualizado do objeto Abertura
@@ -120,10 +134,23 @@ private void abrirConta() {
 				JOptionPane.showMessageDialog(null, "O valor de abertura deve ser maior que zero!", "Erro", JOptionPane.ERROR_MESSAGE);
 			}
 		} catch (NumberFormatException nb) {
-			JOptionPane.showMessageDialog(null, "Por favor, insira um valor válido!", "Erro", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Por favor, insira um valor válido para a abertura de conta!", "Erro", JOptionPane.ERROR_MESSAGE);
 		}
+
+		// Verificar se o PIN foi preenchido
+		char[] pin = passwordFieldPin.getPassword();
+		if (pin.length == 0) {
+			JOptionPane.showMessageDialog(null, "Por favor, insira um PIN!", "Erro", JOptionPane.ERROR_MESSAGE);
+			return; // Encerrar o método se o PIN não foi preenchido
+		}
+
+		// Aqui você pode usar o número da conta e o PIN conforme necessário
+		String numeroConta = textFieldNumeroConta.getText();
+		// Aqui você pode converter o PIN para uma string se precisar usá-lo como texto
+
 	}
 }
+
 
 	private void levantamento() {
 		// Implementa a lógica de levantamento
@@ -230,10 +257,155 @@ private void abrirConta() {
 		}
 	}
 
-	/*private void pagamento() {
-		// Implementa a lógica de pagamento
-		
-	}*/
+
+
+	private void pagamento() {
+		// Criar um painel para o JOptionPane
+		JPanel panel = new JPanel(new GridLayout(4, 1)); // Layout de grade 4x1
+
+		// Adicionar rótulos e botões para as opções de pagamento
+		JLabel label = new JLabel("Selecione o tipo de pagamento:");
+		JButton tvButton = new JButton("TV");
+		JButton servicosBasicosButton = new JButton("Serviços Básicos");
+		JButton pagamentoServicosButton = new JButton("Pagamento de Serviços");
+
+		// Adicionar ação aos botões
+		tvButton.addActionListener(e -> showTvOptions());
+		servicosBasicosButton.addActionListener(e -> showServicosBasicosOptions());
+		pagamentoServicosButton.addActionListener(e -> showPagamentoServicosOptions());
+
+		panel.add(label);
+		panel.add(tvButton);
+		panel.add(servicosBasicosButton);
+		panel.add(pagamentoServicosButton);
+
+		// Exibir o JOptionPane com as opções de pagamento
+		JOptionPane.showMessageDialog(null, panel, "Pagamento", JOptionPane.PLAIN_MESSAGE);
+	}
+
+	private void showTvOptions() {
+		// Criar um array de opções de TV
+		String[] tvOptions = {"DSTV", "GOTV", "ZAP", "TVCabo"};
+
+		// Exibir um JOptionPane para selecionar uma opção de TV
+		String selectedOption = (String) JOptionPane.showInputDialog(
+				null,
+				"Selecione uma opção de TV:",
+				"TV",
+				JOptionPane.QUESTION_MESSAGE,
+				null,
+				tvOptions,
+				tvOptions[0]);
+
+		if (selectedOption != null) {
+			// Criar campos de texto para o número do cartão e o valor a pagar
+			JTextField numeroCartaoField = new JTextField();
+			JTextField valorPagarField = new JTextField();
+
+			// Criar um painel para os campos de texto
+			JPanel panel = new JPanel(new GridLayout(3, 2));
+			panel.add(new JLabel("Número do Cartão:"));
+			panel.add(numeroCartaoField);
+			panel.add(new JLabel("Valor a Pagar:"));
+			panel.add(valorPagarField);
+
+			// Exibir um JOptionPane para preencher os campos de número do cartão e valor a pagar
+			int result = JOptionPane.showConfirmDialog(null, panel, "Informações de Pagamento", JOptionPane.OK_CANCEL_OPTION);
+			if (result == JOptionPane.OK_OPTION) {
+
+				try {
+					int valorPagar = Integer.parseInt(valorPagarField.getText());
+					abr.setSaldo(abr.getSaldo()-valorPagar);
+					JOptionPane.showMessageDialog(null ,
+							"Pagamento de " + selectedOption + " efetuado com sucesso!\n" +
+									"Número do Cartão: " + numeroCartaoField.getText() + "\n" +
+									"Valor Pago: " + valorPagar,
+							"Pagamento Efetuado",
+							JOptionPane.INFORMATION_MESSAGE);
+				} catch (NumberFormatException e) {
+					JOptionPane.showMessageDialog(null, "Por favor, insira um valor numérico válido para o valor a pagar!", "Erro", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		}
+	}
+
+	private void showServicosBasicosOptions() {
+		// Criar um array de opções de serviços básicos
+		String[] servicosBasicosOptions = {"Água", "Luz"};
+
+		// Exibir um JOptionPane para selecionar um serviço básico
+		String selectedOption = (String) JOptionPane.showInputDialog(
+				null,
+				"Selecione um serviço básico:",
+				"Serviços Básicos",
+				JOptionPane.QUESTION_MESSAGE,
+				null,
+				servicosBasicosOptions,
+				servicosBasicosOptions[0]);
+
+		if (selectedOption != null) {
+			// Criar um campo de texto para o valor a pagar
+			JTextField valorPagarField = new JTextField();
+
+			// Criar um painel para o campo de texto
+			JPanel panel = new JPanel(new GridLayout(2, 2));
+			panel.add(new JLabel("Valor a Pagar:"));
+			panel.add(valorPagarField);
+
+			// Exibir um JOptionPane para preencher o campo de valor a pagar
+			int result = JOptionPane.showConfirmDialog(null, panel, "Informações de Pagamento", JOptionPane.OK_CANCEL_OPTION);
+			if (result == JOptionPane.OK_OPTION) {
+
+				try {
+					int valorPagar = Integer.parseInt(valorPagarField.getText());
+					abr.setSaldo(abr.getSaldo()-valorPagar);//Atualiza o saldo
+					JOptionPane.showMessageDialog(null,
+							"Pagamento de " + selectedOption + " no valor de " + valorPagarField.getText() + " efetuado com sucesso!",
+							"Pagamento Efetuado",
+							JOptionPane.INFORMATION_MESSAGE);
+				} catch (NumberFormatException e) {
+					JOptionPane.showMessageDialog(null, "Por favor, insira um valor numérico válido para o valor a pagar!", "Erro", JOptionPane.ERROR_MESSAGE);
+				}
+
+
+			}
+		}
+	}
+
+	private void showPagamentoServicosOptions() {
+		// Criar campos de texto para entidade, referência e valor a pagar
+		JTextField entidadeField = new JTextField();
+		JTextField referenciaField = new JTextField();
+		JTextField valorField = new JTextField();
+
+		// Criar um painel para os campos de texto
+		JPanel panel = new JPanel(new GridLayout(3, 2));
+		panel.add(new JLabel("Entidade:"));
+		panel.add(entidadeField);
+		panel.add(new JLabel("Referência:"));
+		panel.add(referenciaField);
+		panel.add(new JLabel("Valor a Pagar:"));
+		panel.add(valorField);
+
+		// Exibir um JOptionPane para preencher os campos de pagamento de serviços
+		int result = JOptionPane.showConfirmDialog(null, panel, "Pagamento de Serviços", JOptionPane.OK_CANCEL_OPTION);
+		if (result == JOptionPane.OK_OPTION) {
+			try{
+				int valorPagar = Integer.parseInt(valorField.getText());
+				abr.setSaldo(abr.getSaldo()-valorPagar);
+
+				JOptionPane.showMessageDialog(null,
+						"Entidade: " + entidadeField.getText() + "\n" +
+								"Referência: " + referenciaField.getText() + "\n" +
+								"Valor a Pagar: " + valorField.getText(),
+						"Informações do Pagamento",
+						JOptionPane.INFORMATION_MESSAGE);
+			}catch (NumberFormatException e) {
+				JOptionPane.showMessageDialog(null, "Por favor, insira um valor numérico válido para o valor a pagar!", "Erro", JOptionPane.ERROR_MESSAGE);
+			}
+
+		}
+	}
 
 	private void consultarSaldo() {
 		// Implementa a lógica de consultar saldo
